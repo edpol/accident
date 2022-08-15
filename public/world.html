@@ -1,0 +1,65 @@
+<script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.5.3/d3.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/topojson/1.6.9/topojson.min.js"></script>
+<script src="https://datamaps.github.io/scripts/datamaps.world.min.js"></script>
+<div id="container" style="position: relative; width: 100%;"></div>
+<script>
+    let map = new Datamap({
+        element: document.getElementById('container'),
+        responsive: true,
+        scope: 'world',
+        geographyConfig: {
+            popupOnHover: false,
+            highlightOnHover: false
+        },
+        fills: {
+            'USA': '#1f77b4',
+            'RUS': '#9467bd',
+            'PRK': '#ff7f0e',
+            'PRC': '#2ca02c',
+            'IND': '#e377c2',
+            'GBR': '#8c564b',
+            'FRA': '#d62728',
+            'PAK': '#7f7f7f',
+            defaultFill: '#EDDC4E'
+        },
+        data: {
+            'RUS': {fillKey: 'RUS'},
+            'PRK': {fillKey: 'PRK'},
+            'PRC': {fillKey: 'PRC'},
+            'IND': {fillKey: 'IND'},
+            'GBR': {fillKey: 'GBR'},
+            'FRA': {fillKey: 'FRA'},
+            'PAK': {fillKey: 'PAK'},
+            'USA': {fillKey: 'USA'}
+        }
+    });
+
+    // Alternatively with d3
+    d3.select(window).on('resize', function() {
+        map.resize();
+    });
+
+    let bombs = [{
+        name: 'Joe 4',
+        radius: 15,
+        yield: 100,
+        country: 'USSR',
+        fillKey: 'RUS',
+        significance: 'First fusion weapon test by the USSR (not "staged")',
+        date: '1953-08-12',
+        latitude: 10.07,
+        longitude: -81.43
+    }];
+
+    map.bubbles(bombs, {
+        popupTemplate: function (geo, data) {
+            return ['<div class="hoverinfo">' +  data.name,
+                '<br/>Payload: ' +  data.yield + ' kilotons',
+                '<br/>Country: ' +  data.country + '',
+                '<br/>Date: '    +  data.date + '',
+                '<br/>'          +  data.significance + '',
+                '</div>'
+            ].join('');
+        }
+    });
+</script>
